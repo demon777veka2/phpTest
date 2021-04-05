@@ -4,21 +4,21 @@
 
 @section('main_content')
 
-<form method="post" action="/">
-
+<form method="post" action="/addPasta">
+@csrf
 <div class="form-group">
 <label for="exampleTextarea">Название пасты</label>
-<input type="email" class="form-control" id="exampleInputEmail1" style="width:300px" aria-describedby="emailHelp" placeholder="Введите пасту">
+<input type="text" class="form-control" id="pasta_name" name="pasta_name" style="width:300px" aria-describedby="emailHelp" placeholder="Введите пасту">
 </div>
 
 <div class="form-group">
 <label for="exampleTextarea">Текст</label>
-<textarea class="form-control" id="exampleTextarea" rows="3" style="width:500px"></textarea>
+<textarea class="form-control" id="pasta_text" name="pasta_text" rows="3" style="width:500px"></textarea>
 </div>
 
 <div class="form-group">
     <label for="exampleSelect1">Ограничение доступа:</label>
-    <select class="form-control" id="exampleSelect1" style="width:200px">
+    <select class="form-control" id="access_limiter" name="access_limiter" style="width:200px">
       <option>public</option>
       <option>unlisted</option>
       <option>private</option>
@@ -27,7 +27,7 @@
 
   <div class="form-group">
     <label for="exampleSelect1">Срок хранения ссылки:</label>
-    <select class="form-control" id="exampleSelect1" style="width:200px">
+    <select class="form-control" name="time_delete" id="time_delete" style="width:200px">
       <option>10 мин</option>
       <option>1 час </option>
       <option>3 часа</option>
@@ -40,10 +40,10 @@
 
   <div class="form-group">
     <label for="exampleSelect1">Выбрать язык</label>
-    <select class="form-control" id="exampleSelect1" style="width:200px">
-      <option>public</option>
-      <option>unlisted</option>
-      <option>private</option>
+    <select class="form-control" id="language" name="language" style="width:200px">
+      <option>C#</option>
+      <option>php</option>
+      <option>perl</option>
     </select>
   </div>
 

@@ -13,5 +13,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'taskOneController@Home');
+Route::get('/taskOne', 'taskOneController@Home');
 Route::get('/taskTwo', 'taskTwoController@Home');
+Route::post('/addPasta', 'taskOneController@addPasta');
+Route::get('/taskOne/{hash}', 'taskOneController@hash');
+//Route::get('/taskOneResult', 'taskOneController@hash');
+
+

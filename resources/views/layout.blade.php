@@ -14,7 +14,7 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/"><ya-tr-span data-index="1-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Home" data-translation="Задание 1" data-type="trSpan">Задание 1</ya-tr-span></a>
+            <a class="nav-link active" aria-current="page" href="/taskOne"><ya-tr-span data-index="1-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Home" data-translation="Задание 1" data-type="trSpan">Задание 1</ya-tr-span></a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/taskTwo"><ya-tr-span data-index="2-0" data-translated="true" data-source-lang="en" data-target-lang="ru" data-value="Link" data-translation="Задание 2" data-type="trSpan">Задание 2</ya-tr-span></a>
