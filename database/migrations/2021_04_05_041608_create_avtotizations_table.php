@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTaskOnesTable extends Migration
+class CreateAvtotizationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class CreateTaskOnesTable extends Migration
      */
     public function up()
     {
-        Schema::create('task_ones', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('avtotizations', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('login');
+            $table->string('password');
         });
     }
 
@@ -26,6 +27,6 @@ class CreateTaskOnesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('task_ones');
+        Schema::dropIfExists('avtotizations');
     }
 }
