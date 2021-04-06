@@ -61,13 +61,25 @@
     <h2 style="text-align: center; ">Пасты</h2>
     <div style="border: 1px double black">
       @foreach($tenOpenPast as $el)
-                <div class="alert alert-warning" style="text-align: center; ">
-                  <a href="{{$el->hash}}" > <h3>{{$el->pasta_name}}</h3></a>
+                <div class="aslert alert-warning" style="border: 1px double black;text-align: center; height: 35px; ">
+                  <a href="taskOne/{{$el->hash}}" > <h3>{{$el->pasta_name}}</h3></a>
                 </div>    
       @endforeach
     </div>
   </div>
 
+  @if(isset($myPasta))
+    <div style="border: 2px double black; margin-top: 20px;">
+      <h2 style="text-align: center; ">Мои пасты</h2>
+      <div style="border: 1px double black">
+        @foreach($myPasta as $el)
+                  <div class="aslert alert-warning" style=" border: 1px double black;text-align: center; height: 35px; ">
+                    <a href="taskOne/{{$el->hash}}" > <h3>{{$el->pasta_name}}</h3></a>
+                  </div>    
+        @endforeach
+      </div>
+    </div>
+  @endif
   
 </div>
  @endsection

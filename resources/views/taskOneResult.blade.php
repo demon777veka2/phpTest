@@ -10,7 +10,7 @@
         <div style="margin:0 auto; width:50%;float:left;  height: 800px; margin-left: 10%">
             <div class="form-group" >
             <label for="exampleTextarea">Название пасты</label>
-            <input type="text" value="{{$el->pasta_name}}" class="form-control" style="width:300px">
+            <input type="text"  value="{{$el->pasta_name}}" class="form-control" style="width:300px">
             </div>
 
             <div class="form-group">
@@ -35,18 +35,36 @@
         </div>
     @endforeach
 
-    
+    @if(isset($tenOpenPast))
     <div style="float:left; width:300px; margin-top: 20px ;">
   <div style="border: 2px double black;">
     <h2 style="text-align: center; ">Пасты</h2>
     <div style="border: 1px double black">
       @foreach($tenOpenPast as $el)
-                <div class="alert alert-warning" style="text-align: center; ">
+                <div class="aslert alert-warning" style="text-align: center; ">
                   <a href="{{$el->hash}}" > <h3>{{$el->pasta_name}}</h3></a>
                 </div>    
       @endforeach
     </div>
   </div>
+  @endif
+
+  @if(isset($myPasta))
+    <div style="border: 2px double black; margin-top: 20px ;">
+      <h2 style="text-align: center; ">Мои пасты</h2>
+      <div style="border: 1px double black">
+        @foreach($myPasta as $el)
+                  <div class="aslert alert-warning" style="text-align: center; ">
+                    <a href="{{$el->hash}}" > <h3>{{$el->pasta_name}}</h3></a>
+                  </div>    
+        @endforeach
+      </div>
+    </div>
+  @endif
+
+
+
+
 
   
 </div>

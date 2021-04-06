@@ -23,7 +23,15 @@ class avtorizationController extends Controller
             //вывод 10 открытых паст
             $tenOpenPast=$dbPasta->where('access_limiter', '=', 'public')->get()->take(10); 
 
-            return view('taskOne',['login' =>  $session,'tenOpenPast' => $tenOpenPast ] );
+             //вывод паст авторизированного пользователя
+             $loginId=$review->where('login', '=', $request->input('login'))->get("id"); 
+             $loginId = preg_replace("/[^0-9]/", '', $loginId);
+ 
+             $dbAvtotization = new avtotization;
+             
+             $myPasta=$dbPasta->where('avtotization_id', '=', $loginId)->get();        
+   
+            return view('taskOne',['login' =>  $session,'tenOpenPast' => $tenOpenPast,'myPasta' => $myPasta  ]);
         }
         return view('avtorization' ,['error' =>  "Вы ввели не правильно логин или пароль"]);
         
@@ -50,7 +58,13 @@ class avtorizationController extends Controller
             //вывод 10 открытых паст
             $tenOpenPast=$dbPasta->where('access_limiter', '=', 'public')->get()->take(10); 
            
-            return view('taskOne',['login' =>  $session,'tenOpenPast' => $tenOpenPast ] );
+            //вывод паст авторизированного пользователя
+            $loginId=$review->where('login', '=', $request->input('login'))->get("id"); 
+            $loginId = preg_replace("/[^0-9]/", '', $loginId);
+            
+            $myPasta=$dbPasta->where('avtotization_id', '=', $loginId)->get();        
+
+            return view('taskOne',['login' =>  $session,'tenOpenPast' => $tenOpenPast,'myPasta' => $myPasta  ]);
         } 
         return view('registration', ['error' => 'Пароли не совпадают, попробуйте еще раз ']);
       }

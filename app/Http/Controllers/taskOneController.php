@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\pasta;
 use App\avtotization;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 
 class taskOneController extends Controller
 {
@@ -13,8 +14,17 @@ class taskOneController extends Controller
         //вывод 10 открытых паст
         $tenOpenPast=$review->where('access_limiter', '=', 'public')->get()->take(10); 
 
-        return view('taskOne', ['tenOpenPast' => $tenOpenPast]);
+         //вывод паст авторизированного пользователя
+         if(!empty(session('login'))) {
+            $dbAvtotization = new avtotization();
+            $loginId=$dbAvtotization->where('login', '=', session('login'))->get("id"); 
+            $loginId = preg_replace("/[^0-9]/", '', $loginId);
 
+            $myPasta=$review->where('avtotization_id', '=', $loginId)->get(); 
+            return view('taskOne', ['tenOpenPast' => $tenOpenPast,'myPasta' => $myPasta ]);
+         }  
+
+        return view('taskOne', ['tenOpenPast' => $tenOpenPast]);
     }
 
     public function addPasta(Request $request) {
@@ -49,15 +59,27 @@ class taskOneController extends Controller
         $review = new pasta();
 
         //вывод 10 открытых паст
-        $tenOpenPast=$review->where('access_limiter', '=', 'public')->get()->take(10); 
-
+        $tenOpenPast=$review->where('access_limiter', '=', 'public')->get()->take(10);
+        
         $bdcheck=$review->where('hash', '=', $hash)->get()->count() > 0; 
            //проверка на существование hash
         if($bdcheck==null) 
             return view('taskOneResult', ['error' => 'Такой пасты нет' ]);
 
-        $bdInfo=$review->where('hash', '=', $hash)->get(); 
-            return view('taskOneResult', ['review' => $bdInfo, 'tenOpenPast' => $tenOpenPast]);
+            $bdInfo=$review->where('hash', '=', $hash)->get(); 
+        
+            //вывод паст авторизированного пользователя
+            if(!empty(session('login'))) {
+                $dbAvtotization = new avtotization();
+                
+                $loginId=$dbAvtotization->where('login', '=', session('login'))->get("id"); 
+                $loginId = preg_replace("/[^0-9]/", '', $loginId);
+                
+                $myPasta=$review->where('avtotization_id', '=', $loginId)->get(); 
+                return view('taskOneResult', ['review' => $bdInfo, 'tenOpenPast' => $tenOpenPast,'myPasta' => $myPasta ]);
+            }   
+
+        return view('taskOneResult', ['review' => $bdInfo, 'tenOpenPast' => $tenOpenPast ]);
         
     }
 
