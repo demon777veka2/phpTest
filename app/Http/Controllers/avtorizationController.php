@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\pasta;
 use App\avtotization;
 use Illuminate\Http\Request;
 
@@ -10,15 +11,19 @@ class avtorizationController extends Controller
     public function login(Request $request) {
        //авторизация, проверка существования акаунта
        $review = new avtotization;
-       $bdCheckLogin=$review->where('login', '=', $request->input('login'))->get()->count() > 0; 
-       $bdCheckPass = $review->where('login', '=', $request->input('login'))
+       $bdCheck = $review->where('login', '=', $request->input('login'))
                                 -> where('password', '=', $request->input('password'))->get()->count() > 0;
 
 
-        if ($bdCheckPass!=null){
+        if ($bdCheck!=null){
             //заносим инфрормацию о пользователе на сайт
             $session=  $request->session()->put('login', $request->input('login'));
-            return view('taskOne',['login' =>  $session] );
+
+            $dbPasta = new pasta();
+            //вывод 10 открытых паст
+            $tenOpenPast=$dbPasta->where('access_limiter', '=', 'public')->get()->take(10); 
+
+            return view('taskOne',['login' =>  $session,'tenOpenPast' => $tenOpenPast ] );
         }
         return view('avtorization' ,['error' =>  "Вы ввели не правильно логин или пароль"]);
         
@@ -40,8 +45,12 @@ class avtorizationController extends Controller
             $review ->save(); 
             //добавление в сессию логина
             $session=  $request->session()->put('login', $request->input('login'));
+
+            $dbPasta = new pasta();
+            //вывод 10 открытых паст
+            $tenOpenPast=$dbPasta->where('access_limiter', '=', 'public')->get()->take(10); 
            
-            return view('taskOne',['login' =>  $session] );
+            return view('taskOne',['login' =>  $session,'tenOpenPast' => $tenOpenPast ] );
         } 
         return view('registration', ['error' => 'Пароли не совпадают, попробуйте еще раз ']);
       }
@@ -58,7 +67,11 @@ class avtorizationController extends Controller
          
      }
      public function loginExit() {
-        return view('taskOne',['deleteSession' =>  "delete"]);
+        $review = new pasta();
+        //вывод 10 открытых паст
+        $tenOpenPast=$review->where('access_limiter', '=', 'public')->get()->take(10); 
+
+        return view('taskOne',['deleteSession' =>  "delete",'tenOpenPast' => $tenOpenPast ] );
         
     }
 }
