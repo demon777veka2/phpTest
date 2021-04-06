@@ -4,7 +4,10 @@
 
 @section('main_content')
 
-<form method="post" action="/addPasta">
+
+<div style=" margin:0 25% 0 25%; width:50%;">
+
+<form method="post" action="/addPasta" >
 @csrf
 <div class="form-group">
 <label for="exampleTextarea">Название пасты</label>
@@ -52,4 +55,5 @@
   </div>
 
 </form>
+</div>
  @endsection

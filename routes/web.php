@@ -17,6 +17,13 @@ Route::get('/taskOne', 'taskOneController@Home');
 Route::get('/taskTwo', 'taskTwoController@Home');
 Route::post('/addPasta', 'taskOneController@addPasta');
 Route::get('/taskOne/{hash}', 'taskOneController@hash');
-//Route::get('/taskOneResult', 'taskOneController@hash');
+
+Route::post('/login', 'avtorizationController@login');
+Route::get('/loginView', 'avtorizationController@loginView');
+
+Route::post('/registration', 'avtorizationController@registration');
+Route::get('/registrationView', 'avtorizationController@registrationView');
+
+Route::get('/loginExit', 'avtorizationController@loginExit');
 
 

@@ -29,22 +29,19 @@ class taskOneController extends Controller
 
         $review ->save(); 
         
-        
-
-        
-
-       // return view('taskOneResult');
-       //return view('taskOne/'.$hash, ['review' => $review->all()]);
-       // return redirect()->route('/taskOne');
        return redirect('/taskOne/'.$hash);
       
     }
 
     public function hash($hash) {
         $review = new pasta();
-        $qewr=$review->where('hash', '=', $hash)->get(); 
- 
-        return view('taskOneResult', ['review' => $qewr]);
+        $bdcheck=$review->where('hash', '=', $hash)->get()->count() > 0; 
+           //проверка на существование hash
+        if($bdcheck==null) 
+            return view('taskOneResult', ['error' => 'Такой пасты нет' ]);
+
+        $bdInfo=$review->where('hash', '=', $hash)->get(); 
+            return view('taskOneResult', ['review' => $bdInfo]);
         
     }
     
