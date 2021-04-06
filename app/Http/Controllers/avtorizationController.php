@@ -29,7 +29,7 @@ class avtorizationController extends Controller
  
              $dbAvtotization = new avtotization;
              
-             $myPasta=$dbPasta->where('avtotization_id', '=', $loginId)->get();        
+             $myPasta=$dbPasta->where('avtotization_id', '=', $loginId)->get()->take(10);        
    
             return view('taskOne',['login' =>  $session,'tenOpenPast' => $tenOpenPast,'myPasta' => $myPasta  ]);
         }
@@ -62,7 +62,7 @@ class avtorizationController extends Controller
             $loginId=$review->where('login', '=', $request->input('login'))->get("id"); 
             $loginId = preg_replace("/[^0-9]/", '', $loginId);
             
-            $myPasta=$dbPasta->where('avtotization_id', '=', $loginId)->get();        
+            $myPasta=$dbPasta->where('avtotization_id', '=', $loginId)->get()->take(10);        
 
             return view('taskOne',['login' =>  $session,'tenOpenPast' => $tenOpenPast,'myPasta' => $myPasta  ]);
         } 

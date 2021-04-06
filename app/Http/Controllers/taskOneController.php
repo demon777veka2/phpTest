@@ -20,7 +20,7 @@ class taskOneController extends Controller
             $loginId=$dbAvtotization->where('login', '=', session('login'))->get("id"); 
             $loginId = preg_replace("/[^0-9]/", '', $loginId);
 
-            $myPasta=$review->where('avtotization_id', '=', $loginId)->get(); 
+            $myPasta=$review->where('avtotization_id', '=', $loginId)->paginate(10);
             return view('taskOne', ['tenOpenPast' => $tenOpenPast,'myPasta' => $myPasta ]);
          }  
 
@@ -75,7 +75,7 @@ class taskOneController extends Controller
                 $loginId=$dbAvtotization->where('login', '=', session('login'))->get("id"); 
                 $loginId = preg_replace("/[^0-9]/", '', $loginId);
                 
-                $myPasta=$review->where('avtotization_id', '=', $loginId)->get(); 
+                $myPasta=$review->where('avtotization_id', '=', $loginId)->paginate(10);
                 return view('taskOneResult', ['review' => $bdInfo, 'tenOpenPast' => $tenOpenPast,'myPasta' => $myPasta ]);
             }   
 

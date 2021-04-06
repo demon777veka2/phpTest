@@ -7,7 +7,7 @@
 
 <div style="margin:0 auto; width:50%;float:left;  height: 800px">
 
-  <form method="post" action="/addPasta" style="margin-left: 10%" >
+  <form method="post" action="/addPasta" style="padding-left: 20%" >
     @csrf
     <div class="form-group" >
      <label for="exampleTextarea">Название пасты</label>
@@ -56,30 +56,37 @@
   </form>
 </div>
 
-<div style="float:left; width:300px; margin-top: 20px ;">
-  <div style="border: 2px double black;">
-    <h2 style="text-align: center; ">Пасты</h2>
-    <div style="border: 1px double black">
-      @foreach($tenOpenPast as $el)
-                <div class="aslert alert-warning" style="border: 1px double black;text-align: center; height: 35px; ">
-                  <a href="taskOne/{{$el->hash}}" > <h3>{{$el->pasta_name}}</h3></a>
-                </div>    
-      @endforeach
-    </div>
-  </div>
-
+<div style="width:400px;float:left">
   @if(isset($myPasta))
-    <div style="border: 2px double black; margin-top: 20px;">
+  <div style="float:left; width:300px; margin-top: 20px ;">
+    <div style="border: 2px double black;">
       <h2 style="text-align: center; ">Мои пасты</h2>
       <div style="border: 1px double black">
         @foreach($myPasta as $el)
-                  <div class="aslert alert-warning" style=" border: 1px double black;text-align: center; height: 35px; ">
+                  <div class="aslert alert-warning" style="text-align: center;  ">
                     <a href="taskOne/{{$el->hash}}" > <h3>{{$el->pasta_name}}</h3></a>
                   </div>    
         @endforeach
       </div>
     </div>
-  @endif
+    <div style="margin-left:10%">{{$myPasta->links()}}</div>
+  </div>
   
+      
+    @endif
+
+  <div style="float:left; width:300px; margin-top: 20px ;">
+    <div style="border: 2px double black;">
+      <h2 style="text-align: center; ">Пасты</h2>
+      <div style="border: 1px double black">
+        @foreach($tenOpenPast as $el)
+                  <div class="aslert alert-warning" style="text-align: center;  ">
+                    <a href="taskOne/{{$el->hash}}" > <h3>{{$el->pasta_name}}</h3></a>
+                  </div>    
+        @endforeach
+      </div>
+    </div>
+  </div>
+
 </div>
  @endsection
