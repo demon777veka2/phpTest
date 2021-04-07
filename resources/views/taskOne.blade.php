@@ -30,7 +30,7 @@
 
     <div class="form-group">
         <label for="exampleSelect1">Срок хранения ссылки:</label>
-        <select class="form-control" name="time_delete" id="time_delete" style="width:200px">
+        <select class="form-control" name="date_delete" id="date_delete" style="width:200px">
           <option>10 мин</option>
           <option>1 час </option>
           <option>3 часа</option>

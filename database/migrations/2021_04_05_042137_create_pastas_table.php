@@ -14,17 +14,20 @@ class CreatePastasTable extends Migration
     public function up()
     {
         Schema::create('pastas', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('pasta_name');
-            $table->text('pasta_text');
-            $table->string('access_limiter');
-            $table->string('language');
-            $table->string('hash');
-            $table->integer('avtotization_id')->unsigned();
+            $table->increments('id');                               //ID
+            $table->string('pasta_name');                           //Название пасты
+            $table->text('pasta_text');                             //Текст пасты  
+            $table->string('access_limiter');                       //Потуп к пасте
+            $table->integer('access_limiter_id')->nullable();       //ID пользователя при переходе на пасту с доступом unlisted
+            $table->dateTime('date_delete')->nullable();            //Дата удаление
+            $table->string('language');                             //язык для подсветки
+            $table->string('hash');                                 //Хеш страницы
+            $table->integer('avtotization_id')->unsigned();         //Внешний ключ класса avtotization
             $table->foreign('avtotization_id')->references('id')->on('avtotizations');
     
             
         });
+
     }
 
     /**

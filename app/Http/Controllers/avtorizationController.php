@@ -5,21 +5,27 @@ namespace App\Http\Controllers;
 use App\pasta;
 use App\avtotization;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 class avtorizationController extends Controller
 {
     public function login(Request $request) {
+
+        $review = new avtotization;
+        $dbPasta = new pasta();
+
+        //удаление из бд записей с истекшим сроком
+        $dbPasta->where('date_delete', '<', Carbon::now())->delete();
+
        //авторизация, проверка существования акаунта
-       $review = new avtotization;
        $bdCheck = $review->where('login', '=', $request->input('login'))
                                 -> where('password', '=', $request->input('password'))->get()->count() > 0;
-
 
         if ($bdCheck!=null){
             //заносим инфрормацию о пользователе на сайт
             $session=  $request->session()->put('login', $request->input('login'));
 
-            $dbPasta = new pasta();
+            
             //вывод 10 открытых паст
             $tenOpenPast=$dbPasta->where('access_limiter', '=', 'public')->get()->take(10); 
 
@@ -40,8 +46,15 @@ class avtorizationController extends Controller
 
     //регистрация нового пользователя
     public function registration(Request $request) {
-        //проверка на существование логина
+
         $review = new avtotization;
+        $dbPasta = new pasta;
+
+        //удаление из бд записей с истекшим сроком
+        $dbPasta->where('date_delete', '<', Carbon::now())->delete();
+
+        //проверка на существование логина
+        
         $bdcheck=$review->where('login', '=', $request->input('login'))->get()->count() > 0; 
 
       if ($bdcheck==null){
@@ -54,7 +67,6 @@ class avtorizationController extends Controller
             //добавление в сессию логина
             $session=  $request->session()->put('login', $request->input('login'));
 
-            $dbPasta = new pasta();
             //вывод 10 открытых паст
             $tenOpenPast=$dbPasta->where('access_limiter', '=', 'public')->get()->take(10); 
            
@@ -82,6 +94,10 @@ class avtorizationController extends Controller
      }
      public function loginExit() {
         $review = new pasta();
+
+        //удаление из бд записей с истекшим сроком
+        $review->where('date_delete', '<', Carbon::now())->delete();
+        
         //вывод 10 открытых паст
         $tenOpenPast=$review->where('access_limiter', '=', 'public')->get()->take(10); 
 
