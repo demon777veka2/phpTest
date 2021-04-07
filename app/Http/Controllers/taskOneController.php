@@ -55,14 +55,14 @@ class taskOneController extends Controller
         if ($arrDTime[1] == "день")  $date_delete = Carbon::now()->addDays(1);
         if ($arrDTime[1] == "неделя")  $date_delete = Carbon::now()->addWeek(1);
         if ($arrDTime[1] == "месяц")  $date_delete = Carbon::now()->addMonth(1);
-         
+
 
         //добавление в бд
         $review = new pasta();
         $review->pasta_name = $request->input('pasta_name');
         $review->pasta_text = $request->input('pasta_text');
         $review->access_limiter = $request->input('access_limiter');
-        if ($date_delete != "") $review->date_delete = $date_delete ;
+        if ($date_delete != "") $review->date_delete = $date_delete;
         $review->language = $request->input('language');
         $review->hash = $hash;
         $review->avtotization_id = $loginId;

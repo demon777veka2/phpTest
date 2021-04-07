@@ -44,9 +44,11 @@
     <div class="form-group">
       <label for="exampleSelect1">Выбрать язык</label>
       <select class="form-control" id="language" name="language" style="width:200px">
-        <option>C#</option>
+        <option>c#</option>
         <option>php</option>
-        <option>perl</option>
+        <option>js</option>
+        <option>html</option>
+        <option>css</option>
       </select>
     </div>
 
