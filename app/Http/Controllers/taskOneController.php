@@ -14,6 +14,18 @@ class taskOneController extends Controller
     public function home()
     {
         $review = new pasta;
+        $dbAvtotization = new avtotization;
+
+        //проверка cуществования неизвестного пользователя
+        $checkFirstId = $dbAvtotization->where('id', '=', 1)->count() > 0;
+        if ($checkFirstId == null) {
+            $dbAvtotization->id = 1;
+            $dbAvtotization->login = "Noname";
+            $dbAvtotization->password = "Noname";
+
+            $dbAvtotization->save();
+        }
+
         //вывод 10 открытых паст
         $tenOpenPast = $review->where('access_limiter', '=', 'public')->get()->take(10);
 

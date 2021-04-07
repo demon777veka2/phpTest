@@ -9,6 +9,6 @@ class taskTwoController extends Controller
 {
     public function home()
     {
-        return response()->json(apiUsers::get(), 200);
+        return view('taskTwo');
     }
 }

@@ -25,7 +25,6 @@ class CreatePastasTable extends Migration
             $table->integer('avtotization_id')->unsigned();         //Внешний ключ класса avtotization
             $table->foreign('avtotization_id')->references('id')->on('avtotizations');
     
-            
         });
 
     }
