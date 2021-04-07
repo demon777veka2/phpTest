@@ -9,7 +9,8 @@ use Carbon\Carbon;
 
 class avtorizationController extends Controller
 {
-    public function login(Request $request) {
+    public function login(Request $request)
+    {
 
         $review = new avtotization;
         $dbPasta = new pasta();
@@ -17,35 +18,34 @@ class avtorizationController extends Controller
         //удаление из бд записей с истекшим сроком
         $dbPasta->where('date_delete', '<', Carbon::now())->delete();
 
-       //авторизация, проверка существования акаунта
-       $bdCheck = $review->where('login', '=', $request->input('login'))
-                                -> where('password', '=', $request->input('password'))->get()->count() > 0;
+        //авторизация, проверка существования акаунта
+        $bdCheck = $review->where('login', '=', $request->input('login'))
+            ->where('password', '=', $request->input('password'))->get()->count() > 0;
 
-        if ($bdCheck!=null){
+        if ($bdCheck != null) {
             //заносим инфрормацию о пользователе на сайт
-            $session=  $request->session()->put('login', $request->input('login'));
+            $session =  $request->session()->put('login', $request->input('login'));
 
-            
+
             //вывод 10 открытых паст
-            $tenOpenPast=$dbPasta->where('access_limiter', '=', 'public')->get()->take(10); 
+            $tenOpenPast = $dbPasta->where('access_limiter', '=', 'public')->get()->take(10);
 
-             //вывод паст авторизированного пользователя
-             $loginId=$review->where('login', '=', $request->input('login'))->get("id"); 
-             $loginId = preg_replace("/[^0-9]/", '', $loginId);
- 
-             $dbAvtotization = new avtotization;
-             
-             $myPasta=$dbPasta->where('avtotization_id', '=', $loginId)->get()->take(10);        
-   
-            return view('taskOne',['login' =>  $session,'tenOpenPast' => $tenOpenPast,'myPasta' => $myPasta  ]);
+            //вывод паст авторизированного пользователя
+            $loginId = $review->where('login', '=', $request->input('login'))->get("id");
+            $loginId = preg_replace("/[^0-9]/", '', $loginId);
+
+            $dbAvtotization = new avtotization;
+
+            $myPasta = $dbPasta->where('avtotization_id', '=', $loginId)->paginate(10);
+
+            return view('taskOne', ['login' =>  $session, 'tenOpenPast' => $tenOpenPast, 'myPasta' => $myPasta]);
         }
-        return view('avtorization' ,['error' =>  "Вы ввели не правильно логин или пароль"]);
-        
-        
+        return view('avtorization', ['error' =>  "Вы ввели не правильно логин или пароль"]);
     }
 
     //регистрация нового пользователя
-    public function registration(Request $request) {
+    public function registration(Request $request)
+    {
 
         $review = new avtotization;
         $dbPasta = new pasta;
@@ -54,54 +54,54 @@ class avtorizationController extends Controller
         $dbPasta->where('date_delete', '<', Carbon::now())->delete();
 
         //проверка на существование логина
-        
-        $bdcheck=$review->where('login', '=', $request->input('login'))->get()->count() > 0; 
+        $bdcheck = $review->where('login', '=', $request->input('login'))->get()->count() > 0;
 
-      if ($bdcheck==null){
-        if ($request->input('repeat_password')==$request->input('password')){
-            //добавление в бд
-            $review -> login = $request->input('login');
-            $review -> password = $request->input('password');
+        if ($bdcheck == null) {
+            if ($request->input('repeat_password') == $request->input('password')) {
+                //добавление в бд
+                $review->login = $request->input('login');
+                $review->password = $request->input('password');
 
-            $review ->save(); 
-            //добавление в сессию логина
-            $session=  $request->session()->put('login', $request->input('login'));
+                $review->save();
 
-            //вывод 10 открытых паст
-            $tenOpenPast=$dbPasta->where('access_limiter', '=', 'public')->get()->take(10); 
-           
-            //вывод паст авторизированного пользователя
-            $loginId=$review->where('login', '=', $request->input('login'))->get("id"); 
-            $loginId = preg_replace("/[^0-9]/", '', $loginId);
-            
-            $myPasta=$dbPasta->where('avtotization_id', '=', $loginId)->get()->take(10);        
+                //добавление в сессию логина
+                $session =  $request->session()->put('login', $request->input('login'));
 
-            return view('taskOne',['login' =>  $session,'tenOpenPast' => $tenOpenPast,'myPasta' => $myPasta  ]);
-        } 
-        return view('registration', ['error' => 'Пароли не совпадают, попробуйте еще раз ']);
-      }
-       return view('registration', ['error' => 'Логин уже такой есть' ]);
-     }
+                //вывод 10 открытых паст
+                $tenOpenPast = $dbPasta->where('access_limiter', '=', 'public')->get()->take(10);
 
-     public function registrationView() {
-         return view('registration');
-         
-     }
+                //вывод паст авторизированного пользователя
+                $loginId = $review->where('login', '=', $request->input('login'))->get("id");
+                $loginId = preg_replace("/[^0-9]/", '', $loginId);
 
-     public function loginView() {
-         return view('avtorization');
-         
-     }
-     public function loginExit() {
+                $myPasta = $dbPasta->where('avtotization_id', '=', $loginId)->paginate(10);
+
+                return view('taskOne', ['login' =>  $session, 'tenOpenPast' => $tenOpenPast, 'myPasta' => $myPasta]);
+            }
+            return view('registration', ['error' => 'Пароли не совпадают, попробуйте еще раз ']);
+        }
+        return view('registration', ['error' => 'Логин уже такой есть']);
+    }
+
+    public function registrationView()
+    {
+        return view('registration');
+    }
+
+    public function loginView()
+    {
+        return view('avtorization');
+    }
+    public function loginExit()
+    {
         $review = new pasta();
 
         //удаление из бд записей с истекшим сроком
         $review->where('date_delete', '<', Carbon::now())->delete();
-        
-        //вывод 10 открытых паст
-        $tenOpenPast=$review->where('access_limiter', '=', 'public')->get()->take(10); 
 
-        return view('taskOne',['deleteSession' =>  "delete",'tenOpenPast' => $tenOpenPast ] );
-        
+        //вывод 10 открытых паст
+        $tenOpenPast = $review->where('access_limiter', '=', 'public')->get()->take(10);
+
+        return view('taskOne', ['deleteSession' =>  "delete", 'tenOpenPast' => $tenOpenPast]);
     }
 }

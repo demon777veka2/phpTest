@@ -26,5 +26,3 @@ Route::post('/registration', 'avtorizationController@registration');
 Route::get('/registrationView', 'avtorizationController@registrationView');
 
 Route::get('/loginExit', 'avtorizationController@loginExit');
-
-
