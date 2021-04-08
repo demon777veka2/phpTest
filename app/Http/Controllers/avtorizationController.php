@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\TaskOne;
 
 use App\pasta;
 use App\avtotization;
@@ -11,12 +11,11 @@ class avtorizationController extends Controller
 {
     public function login(Request $request)
     {
-
+        $pathClassTaskOne = new taskOneController;
         $review = new avtotization;
         $dbPasta = new pasta();
 
-        //удаление из бд записей с истекшим сроком
-        $dbPasta->where('date_delete', '<', Carbon::now())->delete();
+        $pathClassTaskOne->deleteExpiredRecord();
 
         //авторизация, проверка существования акаунта
         $bdCheck = $review->where('login', '=', $request->input('login'))
@@ -26,15 +25,11 @@ class avtorizationController extends Controller
             //заносим инфрормацию о пользователе на сайт
             $session =  $request->session()->put('login', $request->input('login'));
 
-
-            //вывод 10 открытых паст
-            $tenOpenPast = $dbPasta->where('access_limiter', '=', 'public')->get()->take(10);
+            $tenOpenPast = $pathClassTaskOne->tenOpenPast();
 
             //вывод паст авторизированного пользователя
             $loginId = $review->where('login', '=', $request->input('login'))->get("id");
             $loginId = preg_replace("/[^0-9]/", '', $loginId);
-
-            $dbAvtotization = new avtotization;
 
             $myPasta = $dbPasta->where('avtotization_id', '=', $loginId)->paginate(10);
 
@@ -46,12 +41,11 @@ class avtorizationController extends Controller
     //регистрация нового пользователя
     public function registration(Request $request)
     {
-
+        $pathClassTaskOne = new taskOneController;
         $review = new avtotization;
         $dbPasta = new pasta;
 
-        //удаление из бд записей с истекшим сроком
-        $dbPasta->where('date_delete', '<', Carbon::now())->delete();
+        $pathClassTaskOne->deleteExpiredRecord();
 
         //проверка на существование логина
         $bdcheck = $review->where('login', '=', $request->input('login'))->get()->count() > 0;
@@ -67,8 +61,7 @@ class avtorizationController extends Controller
                 //добавление в сессию логина
                 $session =  $request->session()->put('login', $request->input('login'));
 
-                //вывод 10 открытых паст
-                $tenOpenPast = $dbPasta->where('access_limiter', '=', 'public')->get()->take(10);
+                $tenOpenPast = $pathClassTaskOne->tenOpenPast();
 
                 //вывод паст авторизированного пользователя
                 $loginId = $review->where('login', '=', $request->input('login'))->get("id");
@@ -92,15 +85,15 @@ class avtorizationController extends Controller
     {
         return view('avtorization');
     }
+
+    //удаление сессий
     public function loginExit()
     {
         $review = new pasta();
+        $pathClassTaskOne = new taskOneController;
 
-        //удаление из бд записей с истекшим сроком
-        $review->where('date_delete', '<', Carbon::now())->delete();
-
-        //вывод 10 открытых паст
-        $tenOpenPast = $review->where('access_limiter', '=', 'public')->get()->take(10);
+        $pathClassTaskOne->deleteExpiredRecord();
+        $tenOpenPast = $pathClassTaskOne->tenOpenPast();
 
         return view('taskOne', ['deleteSession' =>  "delete", 'tenOpenPast' => $tenOpenPast]);
     }

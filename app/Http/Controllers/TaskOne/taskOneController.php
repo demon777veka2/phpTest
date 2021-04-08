@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\TaskOne;
 
 use App\pasta;
 use App\avtotization;
@@ -13,6 +13,7 @@ class taskOneController extends Controller
 {
     public function home()
     {
+        $pathClass = new taskOneController;
         $review = new pasta;
         $dbAvtotization = new avtotization;
 
@@ -26,11 +27,8 @@ class taskOneController extends Controller
             $dbAvtotization->save();
         }
 
-        //вывод 10 открытых паст
-        $tenOpenPast = $review->where('access_limiter', '=', 'public')->get()->take(10);
-
-        //удаление из бд записей с истекшим сроком
-        $review->where('date_delete', '<', Carbon::now())->delete();
+        $tenOpenPast = $pathClass->tenOpenPast();
+        $pathClass->deleteExpiredRecord();
 
         //вывод паст авторизированного пользователя
         if (!empty(session('login'))) {
@@ -68,7 +66,6 @@ class taskOneController extends Controller
         if ($arrDTime[1] == "неделя")  $date_delete = Carbon::now()->addWeek(1);
         if ($arrDTime[1] == "месяц")  $date_delete = Carbon::now()->addMonth(1);
 
-
         //добавление в бд
         $review = new pasta();
         $review->pasta_name = $request->input('pasta_name');
@@ -86,14 +83,14 @@ class taskOneController extends Controller
 
     public function hash($hash)
     {
+        $pathClass = new taskOneController;
         $review = new pasta;
         $dbAvtotization = new avtotization;
 
-        //вывод 10 открытых паст
-        $tenOpenPast = $review->where('access_limiter', '=', 'public')->get()->take(10);
+        $tenOpenPast = $pathClass->tenOpenPast();
 
-        $bdcheck = $review->where('hash', '=', $hash)->get()->count() > 0;
         //проверка на существование hash
+        $bdcheck = $review->where('hash', '=', $hash)->get()->count() > 0;
         if ($bdcheck == null)
             return view('taskOneResult', ['error' => 'Такой пасты нет']);
 
@@ -127,18 +124,30 @@ class taskOneController extends Controller
             }
         }
 
-        //удаление из бд записей с истекшим сроком
-        $review->where('date_delete', '<', Carbon::now())->delete();
+        $pathClass->deleteExpiredRecord();
 
         $bdInfo = $review->where('hash', '=', $hash)->get();
 
         //вывод паст авторизированного пользователя
         if (!empty(session('login'))) {
-
             $myPasta = $review->where('avtotization_id', '=', $loginId)->paginate(10);
             return view('taskOneResult', ['review' => $bdInfo, 'tenOpenPast' => $tenOpenPast, 'myPasta' => $myPasta]);
         }
-
         return view('taskOneResult', ['review' => $bdInfo, 'tenOpenPast' => $tenOpenPast]);
+    }
+
+    //удаление из бд записей с истекшим сроком
+    public function deleteExpiredRecord()
+    {
+        $review = new pasta;
+        $review->where('date_delete', '<', Carbon::now())->delete();
+    }
+
+    //вывод 10 открытых паст
+    public function tenOpenPast()
+    {
+        $review = new pasta;
+        $tenOpenPast = $review->where('access_limiter', '=', 'public')->get()->take(10);
+        return  $tenOpenPast;
     }
 }

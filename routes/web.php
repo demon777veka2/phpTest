@@ -14,16 +14,16 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', 'taskOneController@Home');
-Route::get('/taskOne', 'taskOneController@Home');
-Route::get('/taskTwo', 'taskTwoController@Home');
-Route::post('/addPasta', 'taskOneController@addPasta');
-Route::get('/taskOne/{hash}', 'taskOneController@hash');
+Route::get('/', 'TaskOne\taskOneController@Home');
+Route::get('/taskOne', 'TaskOne\taskOneController@Home');
+Route::get('/taskTwo', 'TaskTwo\taskTwoController@Home');
+Route::post('/addPasta', 'TaskOne\taskOneController@addPasta');
+Route::get('/taskOne/{hash}', 'TaskOne\taskOneController@hash');
 
-Route::post('/login', 'avtorizationController@login');
-Route::get('/loginView', 'avtorizationController@loginView');
+Route::post('/login', 'TaskOne\avtorizationController@login');
+Route::get('/loginView', 'TaskOne\avtorizationController@loginView');
 
-Route::post('/registration', 'avtorizationController@registration');
-Route::get('/registrationView', 'avtorizationController@registrationView');
+Route::post('/registration', 'TaskOne\avtorizationController@registration');
+Route::get('/registrationView', 'TaskOne\avtorizationController@registrationView');
 
-Route::get('/loginExit', 'avtorizationController@loginExit');
+Route::get('/loginExit', 'TaskOne\avtorizationController@loginExit');

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\TaskTwo;
 
 use App\apiUsers;
 use Illuminate\Http\Request;
